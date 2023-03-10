@@ -8,6 +8,7 @@ function ContentType() {
   const [isPopup, getPopup] = React.useState(false);
   const [contentType, setcontentType] = React.useState([]);
   const [isClicked, getClicked] = React.useState(false);
+  const myDivRef=React.useRef(null);
   useEffect(() => {
     makeRequest("GET", "http://localhost:5001/content")
       .then((response) => {
@@ -17,15 +18,22 @@ function ContentType() {
         console.log(err.message);
       });
   }, []);
-
-  console.log(contentType);
+  // console.log("contentType");
+  // console.log(contentType);
 
   const handleClick = () => {
     getPopup(true);
   };
   const handleClickField = (id) => {
     getClicked(true);
+
   };
+const handleContent=()=>{
+  // const content = document.getElementById("p_tag");
+  // console.log("content");
+  // console.log(content);
+  
+  }
 
   return (
     <div className="content_body">
@@ -39,7 +47,7 @@ function ContentType() {
             <img src={SearchIcon}></img>
           </div>
           <div className="content_type">
-            <div className="button">
+            <div className="button_content">
               <button className="new_type_button" onClick={handleClick}>
                 + New Type
               </button>
@@ -52,8 +60,8 @@ function ContentType() {
                     className="content_type_list_item"
                     onClick={handleClickField}
                   >
-                    <div className="content_type_list_data">
-                      <p>{item.content_type_name}</p>
+                    <div className="content_type_list_data" ref={myDivRef} onClick={handleContent}>
+                      <p >{item.content_type_name}</p>
                       <p className="count_content">{idx + 1}</p>
                     </div>
                   </div>
@@ -62,7 +70,15 @@ function ContentType() {
             </div>
           </div>
         </div>
-        <div className="content_body_right">{isClicked && <Fields />}</div>
+        <div className="content_body_right">
+          {/* {
+            isClicked
+              contentType.map((item, idx) => {
+                <Fields id={item.content_type_id} />
+              
+          } */}
+          {isClicked && <Fields  />}
+        </div>
       </div>
     </div>
   );

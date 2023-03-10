@@ -1,68 +1,21 @@
 //create a component for user login and password
-import React, { useState, useRef } from "react";
-import { useNavigate } from 'react-router-dom';
-import makeRequest from '../../utils/makeRequest/index';
-import { LOGIN_USER } from '../../constants/apiEndPoints';
-import './Auth.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./Auth.css";
 const Auth = () => {
+  const navigate = useNavigate();
 
-const navigate = useNavigate();
-// const [ loginData, setloginData ] = useState({
-//   email: '',
-//   password: '',
-// });
-  
-// const handleChange = (event) => {
-//   switch(event.target.name) {
-//   case 'email': setloginData({ ...loginData, email: event.target.value }); break;
-//   case 'password': setloginData({ ...loginData, password: event.target.value }); break;
-//   default: 
-//   }
-// };
-  
-// const handleSubmit = async() => {
-//   try {
-//     const response =  await makeRequest(
-//       LOGIN_USER,
-//       {
-//         data: {
-//           user: loginData.email,
-//           password: loginData.password,
-//         },
-//       },
-//     );
-//     localStorage.setItem('jwt_token', response.data.token);
-    
-//   } catch (e) {
-//     const errorStatus = e.response?.status;
-//     if (errorStatus) {
-//       navigate(`error/${errorStatus}`);
-//     } else {
-//       navigate('error');
-//     }
-//   }
-// };
-// const Login = () => {
-//     const navigate = useNavigate();
-//     const routeChange = () =>{ 
-//       const path = '/home'; 
-//       navigate(path);
-//     };
-//  // States for registration
- const [name, setName] = useState('');
-//  // const [email, setEmail] = useState('');
- const [password, setPassword] = useState('');
+  const [userEmail, setuserEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-//  // States for checking the errors
- const [submitted, setSubmitted] = useState(false);
- const [error, setError] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState(false);
 
-//  // send email and password to auth server
- const register = async (name, password) => {
-    const response = await fetch('http://localhost:3000/user', {
-      method: 'POST',
+  const SignUp = async (name, password) => {
+    const response = await fetch("http://localhost:3000/user", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         username: name,
@@ -70,109 +23,86 @@ const navigate = useNavigate();
       }),
     });
     const data = await response.json();
-    console.log(data);
-    
+    // console.log(data);
   };
 
-//   const login = async (email, password) => {
-//     const response = await fetch('http://localhost:3000/login', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify({
-//         username: email,
-//         password: password,
-//       }),
-//     });
-//     const data = await response.json();
-//     console.log(data);
-//     localStorage.setItem('token', data.token);
-//   };
-
-  const handleNameRegister = (e) => {
-    setName(e.target.value);
+  const userSignUpHandler = (e) => {
+    setuserEmail(e.target.value);
     setSubmitted(false);
   };
-
-//   const handleNameLogin = (e) => {
-//     setName(e.target.value);
-//     setSubmitted(false);
-//   };
-  const handlePasswordRegister = (e) => {
+  const handleUserPassword = (e) => {
     setPassword(e.target.value);
     setSubmitted(false);
   };
 
-//   const handlePasswordLogin = (e) => {
-//     setPassword(e.target.value);
-//     setSubmitted(false);
-//   };
- 
-const routeChange = () =>{
-    // const navigate = useNavigate();
-    const path = '/login';
+  const routeChangeHandler = () => {
+    const path = "/login";
     navigate(path);
-    };
+  };
 
-
-  const handleSubmitRegister = (e) => {
+  const handleSignUp = (e) => {
     e.preventDefault();
-    if (name === '' || password === '') {
+    if (userEmail === "" || password === "") {
       setError(true);
     } else {
       setSubmitted(true);
       setError(false);
-      register(name, password);
-        // navigate to dashboard
-        alert('Registration Successful please click okay to login to the account');
-        routeChange();
+      SignUp(userEmail, password);
+      // navigate to dashboard
+
+      alert(
+        "Registration Successful please click okay to login to the account"
+      );
+      routeChangeHandler();
     }
   };
 
-//   const handleSubmitLogin= (e) => {
-//     e.preventDefault();
-//     if (name === '' || password === '') {
-//       setError(true);
-//     } else {
-//       setSubmitted(true);
-//       setError(false);
-//       login(name, password);
-//       // navigate to dashboard
-//       routeChange();
-//     }
-//   };
-
-
-return (
-  <div className='body'>
-    <div className='left_side_body'>
-      <div className='heading'>
-        Design APIs fast, <br /> Manage Content Easily
+  return (
+    <div className="body">
+      <div className="left_side_body">
+        <div className="heading">
+          <h1>
+            <b>
+              Design APIs fast, <br className="br"/> Manage content easily.
+            </b>
+          </h1>
+        </div>
       </div>
-    </div>
-    <div className='right_side_body'>
-      <div >
-        <div className='login_form'>
-          <p>Login to your CMS+ account</p>
-          <div>
-            <div>
-              <p>Email</p>
-              <input type='text'  name='email' onChange={handleNameRegister} />
-              
+      <div className="right_side_body">
+        <div className="login_form_body">
+          <div className="login_form">
+            <div className="right_side_body_content">
+            <h2>Register to your CMS+ account</h2>
+            <div className="inpur_form_body">
+              <div className="email">
+                <p>Email</p>
+                <input className="input" type="text" name="email" onChange={userSignUpHandler} />
+              </div>
+              <div className="password">
+                <p>Password</p>
+                <input
+                  className="input"
+                  type="password"
+                  name="password"
+                  onChange={handleUserPassword}
+                />
+              </div>
+              <div className="buttons">
+                <button className="button_color" type="submit" onClick={handleSignUp}>
+                  Sign Up
+                </button>
+                <button className="button_color" type="submit" onClick={routeChangeHandler}>
+                  Sign In
+                </button>
+              </div>
+
             </div>
-            <div>
-              <p>Password</p>
-              <input type='password'  name='password' onChange={handlePasswordRegister}/>
             </div>
-            <button type="submit" onClick={handleSubmitRegister} >Sign Up</button>
           </div>
         </div>
       </div>
     </div>
-  </div>
-);
-  
+  );
 };
 
 export default Auth;

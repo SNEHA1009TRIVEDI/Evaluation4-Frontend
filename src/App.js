@@ -14,7 +14,7 @@ import Login from "./pages/LoginPage/index";
 import Content from "./pages/ContentPage/index";
 function App() {
   return (
-    <div className="App">
+    <>
      <BrowserRouter>
         <Routes>
           <Route path={HOME_ROUTE} element={<Home />} />
@@ -24,7 +24,7 @@ function App() {
           <Route path={CONTENT_ROUTE} element={<Content />} />
         </Routes>
       </BrowserRouter>
-    </div>
+    </>
   );
 }
 

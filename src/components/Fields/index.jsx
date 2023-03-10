@@ -1,10 +1,15 @@
 import React from "react";
 import "./Fields.css";
+import FieldPopUp from "../FieldPopUp/index.jsx";
 import makeRequest from "../../utils/makeRequest";
 import pencilIcon from "../../assets/user-pencil-write-ui-education_2023-03-09/user-pencil-write-ui-education@2x.png";
 import editIcon from "../../assets/user-edit-text-message-note_2023-03-09/user-edit-text-message-note@3x.png";
 import deleteIcon from "../../assets/trash-delete-recycle-bin-bucket-waste_2023-03-09/trash-delete-recycle-bin-bucket-waste@2x.png";
 function Fields({ id }) {
+  // console.log("id");
+  // console.log(id);
+    const [isPopup, getPopup] = React.useState(false);
+
   const [field, setField] = React.useState([]);
   React.useEffect(() => {
     makeRequest("GET", `http://localhost:5001/field/1`)
@@ -15,7 +20,10 @@ function Fields({ id }) {
         console.log(err.message);
       });
   }, []);
-  console.log(field);
+  const handleClick = () => {
+    getPopup(true);
+  };
+  // console.log(field);
   return (
     <>
       <div className="field_box">
@@ -25,7 +33,8 @@ function Fields({ id }) {
         </div>
         <p className="field_count">{field.length} Fields</p>
       </div>
-      <button className="add_field">+ Add another Field</button>
+      <button className="add_field" onClick={handleClick}>+ Add another Field</button>
+      {isPopup && <FieldPopUp getPopup={getPopup} />}
       <div className="field_content">
         {field.map((item) => {
           return (

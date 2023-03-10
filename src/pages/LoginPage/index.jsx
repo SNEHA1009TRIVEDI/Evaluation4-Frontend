@@ -1,54 +1,74 @@
 //create a component for user login and password
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
 const Login = () => {
-    const navigate = useNavigate();
-  const [name, setName] = useState("");
+  const navigate = useNavigate();
+  const [userEmail, setuserEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(false);
-  const handleNameLogin = (e) => {
-    setName(e.target.value);
+
+  const userSignInHandler = (e) => {
+    setuserEmail(e.target.value);
     setSubmitted(false);
   };
-  const handlePasswordLogin = (e) => {
+  const userPasswordHandler = (e) => {
     setPassword(e.target.value);
     setSubmitted(false);
   };
-
-  const routeChange = () => {
-    const path = "/contents";
-    navigate(path);
-  };
-
-  const login = async (name, password) => {
+  const LogIn = async (userEmail, password) => {
     const response = await fetch("http://localhost:3000/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: name,
+        username: userEmail,
         password: password,
       }),
     });
     const data = await response.json();
+    // localStorage.setItem("token", data.token);
+    console.log("Login");
     console.log(data);
-    localStorage.setItem("token", data.token);
+    return data.token;
   };
 
-  const handleSubmitLogin = (e) => {
+  const verifyToken = async (token) => {
+    console.log(token);
+    const response = await fetch("http://localhost:3000/verify", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+    });
+    const data = await response.json();
+    console.log("verify");
+    console.log(data.success);
+    return data.success;
+  };
+
+  const handleRouteChange = (token) => {
+    // const token = localStorage.getItem("token");
+    // console.log(token);
+    const result = verifyToken(token);
+    if (result) {
+      navigate("/contents");
+    }
+  };
+
+  const handleLogIn = (e) => {
     e.preventDefault();
-    if (name === "" || password === "") {
+    if (userEmail === "" || password === "") {
       setError(true);
     } else {
       setSubmitted(true);
       setError(false);
-      login(name, password);
-      // navigate to dashboard
-      routeChange();
+      const token = LogIn(userEmail, password);
+
+      handleRouteChange(token);
     }
   };
 
@@ -56,29 +76,46 @@ const Login = () => {
     <div className="body">
       <div className="left_side_body">
         <div className="heading">
-          Design APIs fast, <br /> Manage Content Easily
+          <h1>
+            <b>
+              Design APIs fast, <br className="br" /> Manage content easily.
+            </b>
+          </h1>
         </div>
       </div>
       <div className="right_side_body">
-        <div>
+        <div className="login_form_body">
           <div className="login_form">
-            <p>Login to your CMS+ account</p>
-            <div>
-              <div>
+            <h2>Login to your CMS+ account</h2>
+            <div className="inpur_form_body">
+              <div className="email">
                 <p>Email</p>
-                <input type="text" name="email" onChange={handleNameLogin} />
-              </div>
-              <div>
-                <p>Password</p>
                 <input
-                  type="password"
-                  name="password"
-                  onChange={handlePasswordLogin}
+                  className="input"
+                  type="text"
+                  name="email"
+                  onChange={userSignInHandler}
                 />
               </div>
-              <button type="submit" onClick={handleSubmitLogin}>
-                Log In
-              </button>
+              <div className="password">
+                <p>Password</p>
+                <input
+                  className="input"
+                  type="password"
+                  name="password"
+                  onChange={userPasswordHandler}
+                />
+              </div>
+              <div className="button">
+                <button
+                  className="button_color"
+                  type="submit"
+                  onClick={handleLogIn}
+                >
+                  Log In
+                </button>
+                <p className="forgot_password">Forgot password?</p>
+              </div>
             </div>
           </div>
         </div>

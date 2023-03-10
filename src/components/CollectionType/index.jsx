@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./CollectionType.css";
 import SearchIcon from "../../assets/icon-search-dark_2023-03-09/icon-search-dark.png";
 import makeRequest from "../../utils/makeRequest";
+import ContentType from "../ContentType/index.jsx";
 function CollectionType() {
   const [collectionTypes, setCollectionTypes] = useState(null);
 
@@ -14,6 +15,8 @@ function CollectionType() {
         console.log(err.message);
       });
   }, []);
+
+
 
   return (
     <div className="collection_body">
@@ -39,7 +42,7 @@ function CollectionType() {
         </div>
       </div>
       <div className="collection_footer">
-        <div className="collection_footer_content">CONTENT TYPE BUILDER</div>
+        <div className="collection_footer_content" >CONTENT TYPE BUILDER</div>
       </div>
     </div>
   );

@@ -1,28 +1,16 @@
-import axios from 'axios';
-import { BACKEND_URL } from '../../constants/apiEndPoints';
+import axios from "axios";
+const makeRequest = async (method, url,token) => {
+  const data = await axios({
+    method: method,
+    url: url,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+       Authorization: token,  
+    },
 
-const makeRequest = async (apiEndPoint, dynamicConfig = {}, navigate) => {
-  try {
-    const requestDetails = {
-      baseURL: BACKEND_URL,
-      url: apiEndPoint.url,
-      method: apiEndPoint.method,
-      ...dynamicConfig,
-    };
-    console.log(requestDetails);
-    const { data } = await axios(requestDetails);
-
-    return data;
-  } catch (e) {
-    if (navigate) {
-      const errorStatus = e.response?.status;
-      if (errorStatus) {
-        navigate(`/error/${errorStatus}`);
-      } else {
-        navigate('/error');
-      }
-    }
-  }
+    
+  });
+  return data;
 };
-
 export default makeRequest;
