@@ -1,0 +1,56 @@
+.field_box_header {
+  display: flex;
+}
+.pencil_icon {
+  font-size: 0.1em;
+  padding-left: 20px;
+}
+.field_count {
+  margin-top: 10px;
+}
+.add_field {
+  border-style: dotted;
+  border-radius: 9px;
+  width: 100%;
+  height: 50px;
+  color: blueviolet;
+  background-color: white;
+  margin-top: 30px;
+}
+
+.field_content_box {
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 9px;
+  width: 100%;
+  height: 60px;
+  background-color: white;
+}
+
+.field_name {
+  padding-left: 20px;
+  padding-top: 10px;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: black;
+  padding-bottom: 10px;
+}
+.text {
+  display: flex;
+  justify-content: center;
+  padding-top: 10px;
+  position: relative;
+  left: 30%;
+}
+.field_content_box_icons {
+  display: flex;
+  position: relative;
+  left: 80%;
+  right: 0;
+  justify-content: left;
+  padding: 20px;
+}
+.edit_image {
+  padding-right: 10px;
+}
