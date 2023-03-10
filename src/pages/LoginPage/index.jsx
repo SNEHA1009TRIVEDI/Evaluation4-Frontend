@@ -3,74 +3,48 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 const Login = () => {
+  const [user, setUser] = useState([]);
+  const [password, setPassword] = useState([]);
+  const [submit, setSubmit] = useState(false);
   const navigate = useNavigate();
-  const [userEmail, setuserEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState(false);
 
   const userSignInHandler = (e) => {
-    setuserEmail(e.target.value);
-    setSubmitted(false);
+    setUser(e.target.value);
   };
-  const userPasswordHandler = (e) => {
-    setPassword(e.target.value);
-    setSubmitted(false);
-  };
-  const LogIn = async (userEmail, password) => {
+
+  const LogIn = async (user, password) => {
     const response = await fetch("http://localhost:3000/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: userEmail,
+        username: user,
         password: password,
       }),
     });
     const data = await response.json();
-    // localStorage.setItem("token", data.token);
-    console.log("Login");
-    console.log(data);
-    return data.token;
-  };
-
-  const verifyToken = async (token) => {
-    console.log(token);
-    const response = await fetch("http://localhost:3000/verify", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-    });
-    const data = await response.json();
-    console.log("verify");
-    console.log(data.success);
-    return data.success;
-  };
-
-  const handleRouteChange = (token) => {
-    // const token = localStorage.getItem("token");
-    // console.log(token);
-    const result = verifyToken(token);
-    if (result) {
-      navigate("/contents");
-    }
-  };
-
-  const handleLogIn = (e) => {
-    e.preventDefault();
-    if (userEmail === "" || password === "") {
-      setError(true);
+    if (data.success === true) {
+      if (submit) {
+        navigate("/contents");
+      }
     } else {
-      setSubmitted(true);
-      setError(false);
-      const token = LogIn(userEmail, password);
-
-      handleRouteChange(token);
+      alert("Invalid username or password");
     }
+    console.log(data);
   };
+
+  const userPasswordHandler = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handleLogIn = () => {
+    setSubmit(true);
+  };
+
+  if (submit) {
+    LogIn(user, password);
+  }
 
   return (
     <div className="body">
