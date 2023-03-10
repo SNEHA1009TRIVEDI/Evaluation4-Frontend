@@ -30,6 +30,8 @@ const Login = () => {
       }
     } else {
       alert("Invalid username or password");
+      window.location.reload();
+
     }
     console.log(data);
   };
